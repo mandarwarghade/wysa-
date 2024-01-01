@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion Prediction</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin: 0; /* Reset margin */
+            padding: 0; /* Reset padding */
+            background-color: #f0f0f0; /* Set a light background color */
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #emotionForm {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 600px; /* Increased max-width */
+            margin: auto;
+            padding: 30px; /* Increased padding */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        label {
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        #textInput {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #predictionResult {
+            margin-top: 20px;
+            text-align: center; /* Center the text */
+        }
+    </style>
+</head>
+<body>
+    <h1>Emotion Prediction</h1>
+    
+    <form id="emotionForm" onsubmit="predictEmotion(); return false;">
+        <label for="textInput">Enter Text:</label>
+        <input type="text" id="textInput" name="text" required>
+        <button type="submit">Predict Emotion</button>
+    </form>
+
+    <div id="predictionResult"></div>
+
+    <script>
+        async function predictEmotion() {
+            const userInput = document.getElementById('textInput').value;
+            const response = await fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text: userInput })
+            });
+            const result = await response.json();
+            
+            // Display the prediction result
+            document.getElementById('predictionResult').innerHTML = `
+                <p><strong>Input Text:</strong> ${result["Received Text"]}</p>
+                <p><strong>Prediction:</strong> ${result["Prediction"]}</p>
+            `;
+        }
+    </script>
+</body>
+</html>
